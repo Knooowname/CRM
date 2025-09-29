@@ -10,6 +10,7 @@ export const HomePage = () => {
                 <DashboardStatistic />
                 <DashboardClients data={clientsData} />
             </div>
+            {/* /// */}
             <div className="w-full">
                 <СalendarAndActivities />
             </div>
