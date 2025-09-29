@@ -2,7 +2,7 @@ import { HeaderNav } from "./HeaderNav"
 
 export const Header = () => {
     return (
-        <div className="relative h-full w-60 bg-[#6286ee] rounded-xl flex flex-col px-4 py-4 overflow-hidden">
+        <div className="relative h-full w-60 bg-[#6286ee] rounded-xl flex flex-col px-4 py-4  overflow-hidden shrink-0">
             <div className="flex items-center justify-between w-full h-10 mb-[40px]">
                 <h3 className="m-0 text-white font-semibold">
                     React App

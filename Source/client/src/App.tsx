@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import './App.css'
 import { Header } from './components/Header'
 import { HomePage } from './pages/HomePage'
+import { ClientsPage } from './pages/ClientsPage'
 
 function App() {
 
@@ -11,7 +12,8 @@ function App() {
         <div className='flex h-full w-full'>
           <Header />
           <Routes>
-            <Route path={'/'} element={<HomePage />} />
+            <Route path={'/dashboard'} element={<HomePage />} />
+            <Route path={'/clients'} element={<ClientsPage />} />
           </Routes>
         </div>
       </BrowserRouter>

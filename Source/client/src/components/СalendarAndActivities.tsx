@@ -1,9 +1,11 @@
-import { Calendar } from "./ui/Calendar"
+import { Activities } from "./ui/Activities"
+import { DefaultCalendar } from "./ui/Calendar"
 
 export const СalendarAndActivities = () => {
     return (
-        <div className="w-full h-full border-1 border-gray-300">
-            <Calendar/>
+        <div className="flex flex-col gap-6 w-full h-full p-2 overflow-auto">
+            <DefaultCalendar/>
+            <Activities/>
         </div>
     )
 }
