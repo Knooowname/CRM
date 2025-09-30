@@ -1,6 +1,5 @@
 import { Link } from "react-router"
 import { appLinks } from "../shared/constants/appLinks"
-import { HeaderLink } from "./ui/HeaderLink"
 
 
 export const HeaderNav = () => {

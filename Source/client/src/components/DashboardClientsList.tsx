@@ -8,7 +8,7 @@ interface DashboardClientsListProps {
 
 export const DashboardClientsList: FC<DashboardClientsListProps> = ({ data }) => {
     return (
-        <div className="max-h-150 overflow-y-auto">
+        <div className="max-h-full overflow-y-auto">
             <table className="w-full table-fixed">
                 <tbody className="flex flex-col gap-4 max-h-full">
                     {data.map((item, index) => (

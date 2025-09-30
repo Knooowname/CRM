@@ -31,6 +31,9 @@ export const DefaultCalendar = () => {
       '&:hover': {
         backgroundColor: '#6286ee', // blue-700
       },
+      '&:focus': {
+        backgroundColor: '#6286ee', // blue-700
+      },
     },
     '& .MuiDayCalendar-weekDayLabel': {
       color: '#6B7280', // gray-500

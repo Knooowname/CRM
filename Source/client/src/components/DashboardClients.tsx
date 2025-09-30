@@ -1,7 +1,9 @@
 import type { FC } from "react"
 import type { Client } from "../shared/types/clients.types"
-import { Option } from "./ui/Option"
 import { DashboardClientsList } from "./DashboardClientsList"
+import { CustomSelect } from "./ui/CustomSelect"
+import { CreateBtn } from "./ui/CreateBtn"
+import { optionStatusValues } from "../shared/constants/optionStatusValues"
 
 interface DashboardClientsProps {
     data: Client[]
@@ -15,16 +17,8 @@ export const DashboardClients: FC<DashboardClientsProps> = ({ data }) => {
                     Clients
                 </h2>
                 <div className="flex items-center gap-6">
-                    <select name="Opt 1" className="w-45 h-10 border-1 border-gray-300 rounded-md cursor-pointer">
-                        <Option value="All"/>
-                        <Option value="Approved"/>
-                        <Option value="Need approve"/>
-                        <Option value="New"/>
-                        <Option value="Refused"/>
-                    </select>
-                    <button className="h-10 w-35 bg-red-400 rounded-md cursor-pointer">
-                        + Create client
-                    </button>
+                    <CustomSelect optionText="Status" optionValues={optionStatusValues}/>
+                    <CreateBtn text="+ Create client"/>
                 </div>
             </div>
             <DashboardClientsList data={data}/>
