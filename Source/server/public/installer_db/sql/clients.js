@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clients_table = void 0;
+exports.clients_table = {
+    sql: "\n    DROP TABLE IF EXISTS clients;\n    CREATE TABLE clients (\n        id                  BIGSERIAL NOT NULL PRIMARY KEY,\n        last_name           VARCHAR(150) DEFAULT(''),\n        first_name          VARCHAR(150) DEFAULT(''),\n        phone               VARCHAR(50) DEFAULT (''),\n        date_create         TIMESTAMP DEFAULT(CURRENT_TIMESTAMP),\n        email               TEXT DEFAULT(''),\n        password            TEXT DEFAULT('')\n    );\n\n    COMMENT ON TABLE clients IS '\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0438 \u043A\u043B\u0438\u0435\u043D\u0442\u044B';\n    COMMENT ON COLUMN clients.id IS '\u0418\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440';\n    COMMENT ON COLUMN clients.last_name IS '\u0424\u0430\u043C\u0438\u043B\u0438\u044F';\n    COMMENT ON COLUMN clients.first_name IS '\u0418\u043C\u044F';\n    COMMENT ON COLUMN clients.phone IS '\u041D\u043E\u043C\u0435\u0440 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430';\n    COMMENT ON COLUMN clients.date_create IS '\u0414\u0430\u0442\u0430 \u0440\u0435\u0433\u0438\u0441\u0442\u0430\u0440\u0446\u0438\u0438';\n    COMMENT ON COLUMN clients.email IS '\u041F\u043E\u0447\u0442\u0430/\u041B\u043E\u0433\u0438\u043D';\n    COMMENT ON COLUMN clients.password IS '\u041F\u0430\u0440\u043E\u043B\u044C';\n    ",
+    args: new Array()
+};
+//# sourceMappingURL=clients.js.map
