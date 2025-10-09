@@ -13,6 +13,6 @@ exports.users_table = {
 };
 exports.insert_user = {
     sql: "INSERT INTO users(last_name, first_name, phone, date_create, email, password, user_role_id, job_title_id) \n    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-    args: ['admin', 'admin', '+7(900)000-00-00', (0, DateStr_1.dateTimeToSQL)(new Date(Date.now())), 'admin', crypto_1.default.createHmac('sha256', config_json_1.default.crypto_code).update('admin').digest('hex'), 1, 1]
+    args: ['admin', 'admin', '+7(900)000-00-00', (0, DateStr_1.dateTimeToSQL)(new Date(Date.now())), 'admin@mail.ru', crypto_1.default.createHmac('sha256', config_json_1.default.crypto_code).update('admin').digest('hex'), 1, 1]
 };
 //# sourceMappingURL=users.js.map

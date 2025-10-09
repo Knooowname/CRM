@@ -5,19 +5,25 @@ import { HomePage } from './pages/HomePage'
 import { ClientsPage } from './pages/ClientsPage'
 import { ServicesPage } from './pages/ServicesPage'
 import { AnalyticsPage } from './pages/AnalyticsPage'
+import { AuthPage } from './pages/AuthPage'
+import { RegisterPage } from './pages/RegisterPage'
 
 function App() {
+
+  const url = window.location.pathname
 
   return (
     <>
       <BrowserRouter>
         <div className='flex h-full w-full'>
-          <Header />
+          {url !== '/auth' && url !== '/register' ? <Header /> : null}
           <Routes>
-            <Route path={'/dashboard'} element={<HomePage />} />
+            <Route path={'/'} element={<HomePage />} />
             <Route path={'/clients'} element={<ClientsPage />} />
             <Route path={'/services'} element={<ServicesPage />} />
             <Route path={'/analytics'} element={<AnalyticsPage />} />
+            <Route path={'/auth'} element={<AuthPage/>}/>
+            <Route path={'/register'} element={<RegisterPage/>}/>
           </Routes>
         </div>
       </BrowserRouter>

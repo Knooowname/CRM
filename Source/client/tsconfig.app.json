@@ -5,6 +5,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "outDir": "./dist",
     "types": ["vite/client"],
     "skipLibCheck": true,
 
@@ -20,9 +21,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "composite": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
