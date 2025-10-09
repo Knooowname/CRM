@@ -63,7 +63,13 @@ var Users = (function () {
                                 "FROM users WHERE email = '" + this.args.email + "' AND password = '" + pass + "'")];
                     case 1:
                         db_response = _a.sent();
-                        return [2, db_response.rows];
+                        if (db_response.rows[0] !== undefined) {
+                            return [2, db_response.rows];
+                        }
+                        else {
+                            return [2, null];
+                        }
+                        return [2];
                 }
             });
         });
