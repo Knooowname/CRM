@@ -18,7 +18,10 @@ export class Users {
             .digest("hex");
         var db_response = await this.db.query("SELECT id, last_name, first_name, phone, date_create, email, password, user_role_id, job_title_id " +
             "FROM users WHERE email = '" + this.args.email + "' AND password = '" + pass + "'")
-        return db_response.rows
+        if (db_response.rows[0] !== undefined) {
+            return db_response.rows
+        }
+        else{ return null}
     }
 
     async regist() {
@@ -66,7 +69,7 @@ export class Users {
         if (db_response.rows.length !== 0) {
             return db_response.rows
         }
-        else{return null}
+        else { return null }
     }
 
     async check_user() {
