@@ -6,14 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { api } from "../api/api"
 import { APICOMMAND } from "../shared/types/command.types"
 import config from '../../../server/source/config/config.json'
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router"
+import { useMutation } from "@tanstack/react-query"
 
 const registerFormSchema = z.object({
     last_name: z.string().min(1, 'Поле не может быть пустым'),
     first_name: z.string().min(1, 'Поле не может быть пустым'),
     phone: z.string().max(20, 'Превышенно возможное количество символов'),
-    email: z.email().min(1, 'Поле не может быть пустым'),
+    email: z.email('Неверный адрес электронной почты').min(1, 'Поле не может быть пустым'),
     password: z.string().min(1, 'Поле не может быть пустым'),
     user_role_id: z.number(),
     job_title_id: z.number(),
@@ -27,34 +28,50 @@ export const RegisterForm = () => {
     const navigate = useNavigate()
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<RegisterFormType>({
-        resolver: zodResolver(registerFormSchema)
+        resolver: zodResolver(registerFormSchema),
+        defaultValues: {
+            job_title_id: 0,
+            user_role_id: 2,
+        }
     })
 
-    const onSubmit = async (data: RegisterFormType) => {
-        try {
-            const response = await api(APICOMMAND.registNewUser, data, config)
+    const { isPending, isError, error, mutate } = useMutation({
+        mutationKey: ['register'],
+        mutationFn: async (userData: RegisterFormType) => {
+            const response = await api(APICOMMAND.registNewUser, userData, config)
+        
+            const responseData = await response.json()
 
-            const respData = await response.json()
-            
-            if(respData.error) {
-                setErrorMess(respData.error)
+            if(responseData.error) {
+                throw new Error(`${responseData.error}`)
             }
+
+            return responseData
+        },
+        onSuccess: () => {
+            reset()
             navigate('/auth')
-        } catch (error) {
-            throw new Error(`${error}`)
+        },
+        onError: (error) => {
+            setErrorMess(`${error}`)
         }
+    })
+
+    const onSubmit = async (formData: RegisterFormType) => {
+        mutate(formData)
+        // try {
+        //     const response = await api(APICOMMAND.registNewUser, data, config)
+
+        //     const respData = await response.json()
+
+        //     if (respData.error) {
+        //         setErrorMess(respData.error)
+        //     }
+        //     navigate('/auth')
+        // } catch (error) {
+        //     throw new Error(`${error}`)
+        // }
     }
-
-    useEffect(() => {
-        reset({
-            'job_title_id': 0,
-            'user_role_id': 2,
-        })
-    }, [])
-
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
 
     return (
         <>
@@ -67,20 +84,20 @@ export const RegisterForm = () => {
                         Регистрация
                     </h1>
                     <div className="w-full flex flex-col gap-3">
-                        <FormInput type="text" label="Имя" placeholder="Введите имя:" {...register('first_name')} errorMessage={errors.first_name?.message}/>
-                        <FormInput type="text" label="Фамилия" placeholder="Введите фамилию:" {...register('last_name')} errorMessage={errors.last_name?.message}/>
-                        <FormInput type="tel" label="Телефон" placeholder="Введите телефон:" {...register('phone')} errorMessage={errors.phone?.message}/>
-                        <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" {...register('email')} errorMessage={errors.email?.message}/>
-                        <FormInput type="password" label="Пароль" placeholder="Введите пароль:" {...register('password')} errorMessage={errors.password?.message}/>
-                        <FormInput type="hidden" {...register('user_role_id')}/>
-                        <FormInput type="hidden" {...register('job_title_id')}/>
+                        <FormInput type="text" label="Имя" placeholder="Введите имя:" {...register('first_name')} errorMessage={errors.first_name?.message} />
+                        <FormInput type="text" label="Фамилия" placeholder="Введите фамилию:" {...register('last_name')} errorMessage={errors.last_name?.message} />
+                        <FormInput type="tel" label="Телефон" placeholder="Введите телефон:" {...register('phone')} errorMessage={errors.phone?.message} />
+                        <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" {...register('email')} errorMessage={errors.email?.message} />
+                        <FormInput type="password" label="Пароль" placeholder="Введите пароль:" {...register('password')} errorMessage={errors.password?.message} />
+                        <FormInput type="hidden" {...register('user_role_id')} />
+                        <FormInput type="hidden" {...register('job_title_id')} />
                         {errorMess && <span className="text-red-500 font-regular text-sm">{errorMess}</span>}
                     </div>
                     <div className="flex flex-col items-center gap-4">
-                        <FormBtn type="submit">
-                        Регистрация
-                    </FormBtn>
-                    <a href="/auth" className="text-[#333]">Авторизация</a>
+                        <FormBtn type="submit" disabled={isPending}>
+                            Регистрация
+                        </FormBtn>
+                        <a href="/auth" className="text-[#333]">Авторизация</a>
                     </div>
                 </form>
             </div>

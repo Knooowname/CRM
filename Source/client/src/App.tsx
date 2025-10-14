@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 import './App.css'
 import { Header } from './components/Header'
 import { HomePage } from './pages/HomePage'
@@ -8,15 +8,22 @@ import { AnalyticsPage } from './pages/AnalyticsPage'
 import { AuthPage } from './pages/AuthPage'
 import { RegisterPage } from './pages/RegisterPage'
 
+function AppWrapper () {
+  return (
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  )
+}
+
 function App() {
 
-  const url = window.location.pathname
+  const location = useLocation()
 
   return (
     <>
-      <BrowserRouter>
         <div className='flex h-full w-full'>
-          {url !== '/auth' && url !== '/register' ? <Header /> : null}
+          {location.pathname !== '/auth' && location.pathname !== '/register' ? <Header /> : null}
           <Routes>
             <Route path={'/'} element={<HomePage />} />
             <Route path={'/clients'} element={<ClientsPage />} />
@@ -26,11 +33,10 @@ function App() {
             <Route path={'/register'} element={<RegisterPage/>}/>
           </Routes>
         </div>
-      </BrowserRouter>
     </>
   )
 }
 
-export default App
+export default AppWrapper
 
 
