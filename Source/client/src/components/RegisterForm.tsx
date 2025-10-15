@@ -1,4 +1,3 @@
-import z from "zod"
 import { FormBtn } from "./ui/FormBtn"
 import { FormInput } from "./ui/FormInput"
 import { useForm } from "react-hook-form"
@@ -9,18 +8,8 @@ import config from '../../../server/source/config/config.json'
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useMutation } from "@tanstack/react-query"
-
-const registerFormSchema = z.object({
-    last_name: z.string().min(1, 'Поле не может быть пустым'),
-    first_name: z.string().min(1, 'Поле не может быть пустым'),
-    phone: z.string().max(20, 'Превышенно возможное количество символов'),
-    email: z.email('Неверный адрес электронной почты').min(1, 'Поле не может быть пустым'),
-    password: z.string().min(1, 'Поле не может быть пустым'),
-    user_role_id: z.number(),
-    job_title_id: z.number(),
-})
-
-export type RegisterFormType = z.infer<typeof registerFormSchema>
+import { registerFormSchema, type RegisterFormType } from "../validations/registerFormSchema"
+import { ClipLoader } from "react-spinners";
 
 export const RegisterForm = () => {
 
@@ -36,7 +25,7 @@ export const RegisterForm = () => {
     })
 
     const { isPending, isError, error, mutate } = useMutation({
-        mutationKey: ['register'],
+        mutationKey: ['register', 'users'],
         mutationFn: async (userData: RegisterFormType) => {
             const response = await api(APICOMMAND.registNewUser, userData, config)
         
@@ -59,18 +48,6 @@ export const RegisterForm = () => {
 
     const onSubmit = async (formData: RegisterFormType) => {
         mutate(formData)
-        // try {
-        //     const response = await api(APICOMMAND.registNewUser, data, config)
-
-        //     const respData = await response.json()
-
-        //     if (respData.error) {
-        //         setErrorMess(respData.error)
-        //     }
-        //     navigate('/auth')
-        // } catch (error) {
-        //     throw new Error(`${error}`)
-        // }
     }
 
     return (
@@ -95,7 +72,9 @@ export const RegisterForm = () => {
                     </div>
                     <div className="flex flex-col items-center gap-4">
                         <FormBtn type="submit" disabled={isPending}>
-                            Регистрация
+                            {isPending ? 
+                                <ClipLoader size={20} color="ffffff"/>
+                            : 'Регистрация'}
                         </FormBtn>
                         <a href="/auth" className="text-[#333]">Авторизация</a>
                     </div>

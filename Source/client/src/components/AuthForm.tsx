@@ -11,13 +11,8 @@ import { useAppDispatch } from "../redux/hooks";
 import { setUser } from "../redux/reducers/userSlice";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-
-export const authFormSchema = z.object({
-    email: z.email().min(1, 'Поле не может быть пустым'),
-    password: z.string().min(4, 'Пароль должен содержать более 4 символов'),
-})
-
-export type AuthFormType = z.infer<typeof authFormSchema>
+import { authFormSchema, type AuthFormType } from "../validations/authFormSchema";
+import { ClipLoader } from "react-spinners";
 
 export const AuthForm = () => {
 
@@ -69,10 +64,13 @@ export const AuthForm = () => {
                 <div className="w-full flex flex-col gap-3">
                     <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" {...register('email')} errorMessage={errors.email?.message} />
                     <FormInput type="password" label="Пароль" placeholder="Введите пароль:" {...register('password')} errorMessage={errors.password?.message} />
+                    {errorMess && <span className="text-red-500 font-regular text-sm">{errorMess}</span>}
                 </div>
                 <div className="flex flex-col gap-4 items-center">
                     <FormBtn type="submit" disabled={isPending}>
-                        Войти
+                        {isPending ? 
+                            <ClipLoader size={20} color="ffffff"/>
+                        : 'Войти'}
                     </FormBtn>
                     <a href="/register" className="text-[#333]">Регистрация</a>
                 </div>
