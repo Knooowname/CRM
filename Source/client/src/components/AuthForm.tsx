@@ -1,18 +1,16 @@
-import * as z from "zod";
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { APICOMMAND } from "../shared/types/command.types";
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router"
+import { useAppDispatch } from "../redux/hooks"
+import { useForm } from "react-hook-form"
+import { authFormSchema, type AuthFormType } from "../validations/authFormSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { api } from "../api/api"
+import { APICOMMAND } from "../shared/types/command.types"
 import config from '../../../server/source/config/config.json'
-import { api } from "../api/api";
-import { FormInput } from "./ui/FormInput";
-import { FormBtn } from "./ui/FormBtn";
-import { useNavigate } from "react-router";
-import { useAppDispatch } from "../redux/hooks";
-import { setUser } from "../redux/reducers/userSlice";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { authFormSchema, type AuthFormType } from "../validations/authFormSchema";
-import { ClipLoader } from "react-spinners";
+import { setUser } from "../redux/reducers/userSlice"
+import { FormInput } from "./ui/FormInput"
+import { FormBtn } from "./ui/FormBtn"
 
 export const AuthForm = () => {
 
@@ -25,23 +23,24 @@ export const AuthForm = () => {
         resolver: zodResolver(authFormSchema)
     })
 
-    const {isPending, error, isError, mutate} = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationKey: ['auth'],
         mutationFn: async (data: AuthFormType) => {
             const response = await api(APICOMMAND.auth, data, config)
 
             const responseData = await response.json()
 
-            if(responseData.error) {
+            if (responseData.error) {
                 throw new Error(`${responseData.error}`)
             }
 
             return responseData
         },
         onSuccess(data) {
+            console.log(data)
             dispatch(setUser(data))
             reset()
-            navigate('/')
+            // navigate('/')
         },
         onError(error) {
             setErrorMess(`${error}`)
@@ -53,28 +52,42 @@ export const AuthForm = () => {
     }
 
     return (
-        <div className="relative w-full h-full flex items-center justify-center">
-            <div className="absolute bottom-15 w-60 h-60 rounded-[100%] bg-[#6286ee] blur-lg"></div>
-            <div className="absolute bottom-30 right-2 w-200 h-200 rounded-[100%] bg-[#6286ee] blur-lg"></div>
-            <div className="absolute left-10 -top-10 w-160 h-160 rounded-[100%] bg-[#6286ee] blur-lg"></div>
-            <form className="flex flex-col items-center gap-6 w-auto min-w-120 h-auto px-10 py-20 border-1 border-gray-300 rounded-2xl backdrop-blur-xl" onSubmit={handleSubmit(onSubmit)}>
-                <h1 className="text-[#333333] font-medium text-2xl">
-                    Авторизация
-                </h1>
-                <div className="w-full flex flex-col gap-3">
-                    <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" {...register('email')} errorMessage={errors.email?.message} />
-                    <FormInput type="password" label="Пароль" placeholder="Введите пароль:" {...register('password')} errorMessage={errors.password?.message} />
-                    {errorMess && <span className="text-red-500 font-regular text-sm">{errorMess}</span>}
+        <>
+            <div className="flex items-center justify-center bg-[#2b2638] w-full h-[100vh]">
+                <div className="grid grid-cols-2 px-40 py-15 w-full h-full gap-4">
+                    <div className="flex flex-col justify-center p-20">
+                        <h1 className="text-[40px] font-semibold text-[#FEFDFB] mb-6">
+                            Создайте аккаунт
+                        </h1>
+                        <div className="flex items center gap-4 mb-6">
+                            <p className="text-xl font-light text-[#FEFDFB]">
+                                Нет аккаунта?
+                            </p>
+                            <Link to={'/register'} className="text-xl font-regular text-blue-400 underline">
+                                Зарегистрироваться
+                            </Link>
+                        </div>
+                        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+                            <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" placeholderColor="white" textColor="white" {...register('email')} errorMessage={errors.email?.message} />
+                            <FormInput type="password" label="Пароль" placeholder="Введите пароль:" placeholderColor="white" textColor="white" {...register('password')} errorMessage={errors.password?.message} />
+                            {errorMess && <span>{errorMess}</span>}
+                            <FormBtn type={'submit'} height="50px" disabled={isPending}>
+                                Отправить
+                            </FormBtn>
+                        </form>
+                    </div>
+                    <div className="relative bg-red-300 bg-[url(/src/assets/regist_bg.jpeg)] bg-center bg-no-repeat bg-cover rounded-3xl">
+                        <Link to={'/'} className="group hover:shadow-xl transition-all duration-300 ease-in-out absolute flex items-center justify-center min-w-[150px] min-h-[36px] py-2 px-4 bg-transparent rounded-3xl right-4 top-4 text-sm font-regular text-[#333] overflow-hidden cursor-pointer">
+                            <div className="absolute top-0 left-0 opacity-[0.2] bg-white w-[300px] h-[300px] group-hover:opacity-[0.5] transition-all duration-300 ease-in-out z-[0]">
+
+                            </div>
+                            <p className="absolute opacity-[0.6] group-hover:opacity-[1] transition-all duration-300 ease-in-out z-[5] text-black">
+                                Вернуться на сайт
+                            </p>
+                        </Link>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-4 items-center">
-                    <FormBtn type="submit" disabled={isPending}>
-                        {isPending ? 
-                            <ClipLoader size={20} color="ffffff"/>
-                        : 'Войти'}
-                    </FormBtn>
-                    <a href="/register" className="text-[#333]">Регистрация</a>
-                </div>
-            </form>
-        </div>
+            </div>
+        </>
     )
 }

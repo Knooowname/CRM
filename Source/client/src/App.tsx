@@ -5,13 +5,14 @@ import { HomePage } from './pages/HomePage'
 import { ClientsPage } from './pages/ClientsPage'
 import { ServicesPage } from './pages/ServicesPage'
 import { AnalyticsPage } from './pages/AnalyticsPage'
-import { AuthPage } from './pages/AuthPage'
 import { RegisterPage } from './pages/RegisterPage'
+import { NewAuthPage } from './pages/AuthPage'
+import { useEffect } from 'react'
 
-function AppWrapper () {
+function AppWrapper() {
   return (
     <BrowserRouter>
-      <App/>
+      <App />
     </BrowserRouter>
   )
 }
@@ -20,19 +21,31 @@ function App() {
 
   const location = useLocation()
 
+  useEffect(() => {
+    const parent: HTMLDivElement | null = document.querySelector('#root')
+    if (parent) {
+      if (location.pathname === '/auth' || location.pathname === '/register') {
+        parent.style.padding = '0'
+      } else {
+        // Можно сбросить стиль, если нужно
+        parent.style.padding = ''
+      }
+    }
+  }, [location.pathname])
+
   return (
     <>
-        <div className='flex h-full w-full'>
-          {location.pathname !== '/auth' && location.pathname !== '/register' ? <Header /> : null}
-          <Routes>
-            <Route path={'/'} element={<HomePage />} />
-            <Route path={'/clients'} element={<ClientsPage />} />
-            <Route path={'/services'} element={<ServicesPage />} />
-            <Route path={'/analytics'} element={<AnalyticsPage />} />
-            <Route path={'/auth'} element={<AuthPage/>}/>
-            <Route path={'/register'} element={<RegisterPage/>}/>
-          </Routes>
-        </div>
+      <div className='flex h-full w-full'>
+        {location.pathname !== '/auth' && location.pathname !== '/register' && location.pathname !== '/newauth' ? <Header /> : null}
+        <Routes>
+          <Route path={'/'} element={<HomePage />} />
+          <Route path={'/clients'} element={<ClientsPage />} />
+          <Route path={'/services'} element={<ServicesPage />} />
+          <Route path={'/analytics'} element={<AnalyticsPage />} />
+          <Route path={'/auth'} element={<NewAuthPage />} />
+          <Route path={'/register'} element={<RegisterPage />} />
+        </Routes>
+      </div>
     </>
   )
 }
