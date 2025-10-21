@@ -38,7 +38,6 @@ export const RegisterForm = () => {
         },
         onSuccess: (data) => {
             reset()
-            console.log(data)
             navigate('/auth')
         },
         onError: (error) => {

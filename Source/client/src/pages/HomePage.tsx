@@ -15,6 +15,7 @@ export const HomePage = () => {
     const users = useAppSelector(state => state.users.users)
 
     const {mutate} = useMutation({
+        mutationKey: ['users'],
         mutationFn: async () => {
             const response = await api(APICOMMAND.getAllUsers, {}, config)
         
