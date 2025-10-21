@@ -15,6 +15,7 @@ export const events_table = {
         client_id                BIGINT DEFAULT(0),
         datetime_end_event       TIMESTAMP DEFAULT(CURRENT_TIMESTAMP),
         id_services              BIGINT DEFAULT(0),
+        id_status                BIGINT DEFAULT(0),
         information               TEXT DEFAULT('')
     );
 
@@ -25,6 +26,7 @@ export const events_table = {
     COMMENT ON COLUMN events.client_id IS 'Кого обслуживают';
     COMMENT ON COLUMN events.datetime_end_event IS 'Дата время окончания события';
     COMMENT ON COLUMN events.id_services IS 'Идентификтор услуги';
+    COMMENT ON COLUMN events.id_status IS 'Идентификтор услуги';
     COMMENT ON COLUMN events.information IS 'Дополнительная информация';
     `,
     args: new Array()

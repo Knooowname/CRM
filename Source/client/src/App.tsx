@@ -1,24 +1,55 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 import './App.css'
 import { Header } from './components/Header'
 import { HomePage } from './pages/HomePage'
+import { ClientsPage } from './pages/ClientsPage'
+import { ServicesPage } from './pages/ServicesPage'
+import { AnalyticsPage } from './pages/AnalyticsPage'
+import { RegisterPage } from './pages/RegisterPage'
+import { NewAuthPage } from './pages/AuthPage'
+import { useEffect } from 'react'
+
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  )
+}
 
 function App() {
 
+  const location = useLocation()
+
+  useEffect(() => {
+    const parent: HTMLDivElement | null = document.querySelector('#root')
+    if (parent) {
+      if (location.pathname === '/auth' || location.pathname === '/register') {
+        parent.style.padding = '0'
+      } else {
+        // Можно сбросить стиль, если нужно
+        parent.style.padding = ''
+      }
+    }
+  }, [location.pathname])
+
   return (
     <>
-      <BrowserRouter>
-        <div className='flex h-full w-full'>
-          <Header />
-          <Routes>
-            <Route path={'/'} element={<HomePage />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      <div className='flex h-full w-full'>
+        {location.pathname !== '/auth' && location.pathname !== '/register' && location.pathname !== '/newauth' ? <Header /> : null}
+        <Routes>
+          <Route path={'/'} element={<HomePage />} />
+          <Route path={'/clients'} element={<ClientsPage />} />
+          <Route path={'/services'} element={<ServicesPage />} />
+          <Route path={'/analytics'} element={<AnalyticsPage />} />
+          <Route path={'/auth'} element={<NewAuthPage />} />
+          <Route path={'/register'} element={<RegisterPage />} />
+        </Routes>
+      </div>
     </>
   )
 }
 
-export default App
+export default AppWrapper
 
 
