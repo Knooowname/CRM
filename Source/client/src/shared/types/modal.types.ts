@@ -1,1 +1,1 @@
-export type Modal = 'addClient' | null
+export type Modal = 'addClient' | 'details' | null

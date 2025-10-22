@@ -1,20 +1,29 @@
 import type { FC } from "react"
+import { useAppDispatch } from "../../redux/hooks"
+import { openModal } from "../../redux/reducers/modalSlice"
 
 interface DashboardClientsCardProps {
+    id: string,
     img: string,
     name: string,
     surname: string,
-    recordingDate: string,
     recordingTime: string,
     status: 'Approved' | 'Need approve' | 'New' | 'Refused',
+    setCurrentUserId: (id: string) => void,
 }
 
-export const DashboardClientsCard: FC<DashboardClientsCardProps> = ({ img, name, surname, status, recordingDate, recordingTime }) => {
+export const DashboardClientsCard: FC<DashboardClientsCardProps> = ({ id, img, name, surname, status, recordingTime, setCurrentUserId }) => {
+    
+    const dispatch = useAppDispatch()
+
     return (
         <>
             <td className="flex gap-2 items-center w-[20%]">
                 <div className={`bg-[url(${img})] bg-no-repeat bg-center bg-auto w-10 h-10 rounded-4xl bg-gray-300`}></div>
                 <div>
+                    <span className="text-gray-400 font-light text-sm">
+                        Имя Фамилия
+                    </span>
                     <p className="text-[#333]">
                         {name + ' ' + surname}
                     </p>
@@ -22,15 +31,15 @@ export const DashboardClientsCard: FC<DashboardClientsCardProps> = ({ img, name,
             </td>
             <td className="flex flex-col gap-0.5 w-[20%]">
                 <span className="text-gray-400 font-light text-sm">
-                    Date
+                    Услуга
                 </span>
                 <p className="text-[#333]">
-                    {recordingDate}
+                    Service Name...
                 </p>
             </td>
             <td className="flex flex-col gap-0.5 w-[20%]">
                 <span className="text-gray-400 font-light text-sm">
-                    Time
+                    Дата и время
                 </span>
                 <p className="text-[#333]">
                     {recordingTime}
@@ -38,13 +47,16 @@ export const DashboardClientsCard: FC<DashboardClientsCardProps> = ({ img, name,
             </td>
             <td className="flex flex-col gap-0.5 w-[20%]">
                 <span className="text-gray-400 font-light text-sm">
-                    Status
+                    Статус
                 </span>
                 <p className={`${status === 'Approved' ? 'text-[#6fbe64]' : status === 'Need approve' ? 'text-[#e4dd73]' : status === 'New' ? 'text-[#62b3de]' : 'text-[#d04547]'}`}>
                     {status}
                 </p>
             </td>
-            <button className="text-[#6286ee] cursor-pointer">
+            <button onClick={() => {
+                setCurrentUserId(id)
+                dispatch(openModal('details'))
+            }} className="text-[#6286ee] cursor-pointer">
                 Details →
             </button>
         </>

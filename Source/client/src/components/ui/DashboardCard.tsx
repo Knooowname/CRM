@@ -1,4 +1,5 @@
 import type { FC } from "react"
+// import { LineChart, Line } from 'recharts';
 
 interface DashboardCardProps {
     value: string,
@@ -8,7 +9,8 @@ interface DashboardCardProps {
 export const DashboardCard: FC<DashboardCardProps> = ({ value, text }) => {
     return (
         <div className="flex items-center justify-center gap-6 min-h-10 border-1 border-gray-300 w-full rounded-md p-4">
-            <div className="w-25 h-25 bg-gray-600 rounded-lg"></div>
+            <div className="w-25 h-25 bg-gray-600 rounded-lg">
+            </div>
             <div className="flex flex-col gap-2">
                 <h2 className="text-gray-700 text-2xl font-semibold">
                     {value}

@@ -76,7 +76,7 @@ export const AuthForm = () => {
                             </FormBtn>
                         </form>
                     </div>
-                    <div className="relative bg-red-300 bg-[url(/src/assets/regist_bg.jpeg)] bg-center bg-no-repeat bg-cover rounded-3xl">
+                    <div className="relative bg-red-300 bg-[url(/src/assets/login_bg.jpeg)] bg-center bg-no-repeat bg-cover rounded-3xl">
                         <Link to={'/'} className="group hover:shadow-xl transition-all duration-300 ease-in-out absolute flex items-center justify-center min-w-[150px] min-h-[36px] py-2 px-4 bg-transparent rounded-3xl right-4 top-4 text-sm font-regular text-[#333] overflow-hidden cursor-pointer">
                             <div className="absolute top-0 left-0 opacity-[0.2] bg-white w-[300px] h-[300px] group-hover:opacity-[0.5] transition-all duration-300 ease-in-out z-[0]">
 

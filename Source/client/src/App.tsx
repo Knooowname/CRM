@@ -7,10 +7,12 @@ import { ServicesPage } from "./pages/ServicesPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { NewAuthPage } from "./pages/AuthPage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ModalLayout } from "./components/ModalLayout";
 import { ModalFormAddClient } from "./components/ui/ModalFormAddClient";
 import { useAppSelector } from "./redux/hooks";
+import { ModalDetails } from "./components/ui/ModalDetails";
+import type { User } from "./shared/types/user.types";
 
 function AppWrapper() {
   return (
@@ -21,7 +23,12 @@ function AppWrapper() {
 }
 
 function App() {
+  
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+
   const location = useLocation();
+  const allUsers = useAppSelector(state => state.users.users)
 
   useEffect(() => {
     const parent: HTMLDivElement | null = document.querySelector("#root");
@@ -29,13 +36,21 @@ function App() {
       if (location.pathname === "/auth" || location.pathname === "/register") {
         parent.style.padding = "0";
       } else {
-        // Можно сбросить стиль, если нужно
         parent.style.padding = "";
       }
     }
   }, [location.pathname]);
 
   const modal = useAppSelector(state => state.modal)
+
+  useEffect(() => {
+    const filteredUser = allUsers?.filter(user => user.id === currentUserId)
+
+    if(filteredUser) {
+      setCurrentUser(filteredUser[0])
+    }
+
+  }, [currentUserId])
 
   return (
     <>
@@ -50,9 +65,12 @@ function App() {
         {modal.isOpen && modal.type === 'addClient' && <ModalLayout>
           <ModalFormAddClient/>  
         </ModalLayout>}
+        {modal.isOpen && modal.type === 'details' && <ModalLayout>
+          <ModalDetails img={''} clientName={currentUser?.first_name ? currentUser?.first_name : ''} clientSurname={currentUser?.last_name ? currentUser?.last_name : ''} dateAndTime={currentUser?.date_create ? currentUser.date_create : ''} serviceName={'name'} servicePrice={'3000'}/>  
+        </ModalLayout>}
 
         <Routes>
-          <Route path={"/"} element={<HomePage />} />
+          <Route path={"/"} element={<HomePage setCurrentUserId={setCurrentUserId}/>} />
           <Route path={"/clients"} element={<ClientsPage />} />
           <Route path={"/services"} element={<ServicesPage />} />
           <Route path={"/analytics"} element={<AnalyticsPage />} />

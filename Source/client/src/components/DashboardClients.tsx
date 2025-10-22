@@ -11,10 +11,11 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { setStatus } from "../redux/reducers/statusSlice"
 
 interface DashboardClientsProps {
-    clients: User[]
+    clients: User[],
+    setCurrentUserId: (id: string) => void,
 }
 
-export const DashboardClients: FC<DashboardClientsProps> = ({ clients }) => {
+export const DashboardClients: FC<DashboardClientsProps> = ({ clients, setCurrentUserId }) => {
     
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.status.status)
@@ -55,7 +56,7 @@ export const DashboardClients: FC<DashboardClientsProps> = ({ clients }) => {
                     <CreateBtn text="+ Создать клиента" modalType={'addClient'}/>
                 </div>
             </div>
-            <DashboardClientsList clients={clients}/>
+            <DashboardClientsList setCurrentUserId={setCurrentUserId} clients={clients}/>
         </>
     )
 }

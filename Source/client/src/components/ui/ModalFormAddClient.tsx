@@ -62,7 +62,7 @@ export const ModalFormAddClient = () => {
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div>
       <form
         className="relative flex flex-col items-center gap-4 min-w-[360px] w-[460px] min-h-[400px] py-8 px-6 bg-white rounded-xl"
         onSubmit={handleSubmit(onSumbitAddClientModal)}
