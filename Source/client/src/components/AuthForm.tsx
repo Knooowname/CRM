@@ -37,13 +37,13 @@ export const AuthForm = () => {
             return responseData
         },
         onSuccess(data) {
-            console.log(data)
             dispatch(setUser(data))
             reset()
-            // navigate('/')
+            navigate('/')
         },
         onError(error) {
-            setErrorMess(`${error}`)
+            console.log(error)
+            setErrorMess(`${error.message}`)
         }
     })
 
@@ -70,7 +70,7 @@ export const AuthForm = () => {
                         <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput type="email" label="E-mail" placeholder="Введите E-mail:" placeholderColor="white" textColor="white" {...register('email')} errorMessage={errors.email?.message} />
                             <FormInput type="password" label="Пароль" placeholder="Введите пароль:" placeholderColor="white" textColor="white" {...register('password')} errorMessage={errors.password?.message} />
-                            {errorMess && <span>{errorMess}</span>}
+                            {errorMess && <span className="text-md font-light text-red-300">{errorMess}</span>}
                             <FormBtn type={'submit'} height="50px" disabled={isPending}>
                                 Отправить
                             </FormBtn>

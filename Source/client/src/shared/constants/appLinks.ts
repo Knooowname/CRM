@@ -1,7 +1,7 @@
 export const appLinks = [
     {
         srcImg: 'src/assets/dashboard.svg',
-        href: 'dashboard',
+        href: '',
         nameLink: 'Dashboard',
     },
     {
