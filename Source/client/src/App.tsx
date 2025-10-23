@@ -29,7 +29,9 @@ function App() {
 
   const location = useLocation();
   const allUsers = useAppSelector(state => state.users.users)
+  const modal = useAppSelector(state => state.modal)
 
+  // useEffect отвечающий за отображение паддингов у root div
   useEffect(() => {
     const parent: HTMLDivElement | null = document.querySelector("#root");
     if (parent) {
@@ -40,8 +42,6 @@ function App() {
       }
     }
   }, [location.pathname]);
-
-  const modal = useAppSelector(state => state.modal)
 
   useEffect(() => {
     const filteredUser = allUsers?.filter(user => user.id === currentUserId)
@@ -71,7 +71,7 @@ function App() {
 
         <Routes>
           <Route path={"/"} element={<HomePage setCurrentUserId={setCurrentUserId}/>} />
-          <Route path={"/clients"} element={<ClientsPage />} />
+          <Route path={"/clients"} element={<ClientsPage setCurrentUserId={setCurrentUserId}/>} />
           <Route path={"/services"} element={<ServicesPage />} />
           <Route path={"/analytics"} element={<AnalyticsPage />} />
           <Route path={"/auth"} element={<NewAuthPage />} />
