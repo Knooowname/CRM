@@ -1,1 +1,10 @@
-export const optionDateValues = ['new ones first', 'old ones first']
+export const optionDateValues = [
+    {
+        id: '1', 
+        name_status: 'Сначала новые'
+    },
+    {
+        id: '2',
+        name_status: 'Сначала старые',
+    }
+]
