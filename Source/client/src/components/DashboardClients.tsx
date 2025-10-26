@@ -13,9 +13,10 @@ import { setStatus } from "../redux/reducers/statusSlice"
 interface DashboardClientsProps {
     clients: User[],
     setCurrentUserId: (id: string) => void,
+    currentUserId: string,
 }
 
-export const DashboardClients: FC<DashboardClientsProps> = ({ clients, setCurrentUserId }) => {
+export const DashboardClients: FC<DashboardClientsProps> = ({ clients, setCurrentUserId, currentUserId }) => {
     
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.status.status)
@@ -49,7 +50,7 @@ export const DashboardClients: FC<DashboardClientsProps> = ({ clients, setCurren
         <>
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-gray-500 font-medium text-xl">
-                    Клиенты
+                    Ивенты
                 </h2>
                 <div className="flex items-center gap-6">
                     <CustomSelect optionText="Status" optionValues={status ? status : null}/>

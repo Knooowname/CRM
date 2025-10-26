@@ -37,7 +37,7 @@ export const AuthForm = () => {
             return responseData
         },
         onSuccess(data) {
-            dispatch(setUser(data))
+            dispatch(setUser(data.data))
             reset()
             navigate('/')
         },

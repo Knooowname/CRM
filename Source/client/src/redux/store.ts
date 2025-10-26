@@ -3,6 +3,8 @@ import userReducer from './reducers/userSlice'
 import usersReducer from './reducers/usersSlice'
 import modalReducer from './reducers/modalSlice'
 import statusReducer from './reducers/statusSlice'
+import eventsReducer from './reducers/eventSlice'
+import servicesReducer from './reducers/servicesSlice'
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
         users: usersReducer,
         modal: modalReducer,
         status: statusReducer,
+        events: eventsReducer,
+        services: servicesReducer,
     }
 })
 

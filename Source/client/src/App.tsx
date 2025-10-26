@@ -70,7 +70,7 @@ function App() {
         </ModalLayout>}
 
         <Routes>
-          <Route path={"/"} element={<HomePage setCurrentUserId={setCurrentUserId}/>} />
+          <Route path={"/"} element={<HomePage />} />
           <Route path={"/clients"} element={<ClientsPage setCurrentUserId={setCurrentUserId}/>} />
           <Route path={"/services"} element={<ServicesPage />} />
           <Route path={"/analytics"} element={<AnalyticsPage />} />

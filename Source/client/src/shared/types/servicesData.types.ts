@@ -1,6 +1,0 @@
-export type Service = {
-    id: string,
-    name: string,
-    price: string,
-    dateLastChange: string,
-}
