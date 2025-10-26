@@ -30,9 +30,9 @@ export class Events {
         var start_date = dateTimeToSQL(new Date(this.args.datetime_start_event));
         var end_date = dateTimeToSQL(new Date(this.args.datetime_end_event));
 
-        var db_response = await this.db.query("INSERT INTO events (datetime_start_event, user_id, client_id, datetime_end_event, id_services, information) " +
-            "VALUES ('" + start_date + "', " + this.args.user_id + ", " + this.args.client_id + ", '" + end_date + "', " + this.args.id_services + ", '" + this.args.information + "') RETURNING id");
-        console.log(db_response.rows)
+        var db_response = await this.db.query("INSERT INTO events (datetime_start_event, user_id, client_id, datetime_end_event, id_services, id_status, information) " +
+            "VALUES ('" + start_date + "', " + this.args.user_id + ", " + this.args.client_id + ", '" + end_date + "', " + this.args.id_services + ", " + this.args.id_status + ", '" + this.args.information + "') RETURNING id");
+        
         return db_response.rows;
     }
 
@@ -40,7 +40,7 @@ export class Events {
         var start_date = dateTimeToSQL(new Date(this.args.datetime_start_event));
         var end_date = dateTimeToSQL(new Date(this.args.datetime_end_event));
         var db_response = await this.db.query("UPDATE events SET datetime_start_event = '" + start_date + "', user_id = " + this.args.user_id + ", " +
-            "client_id = " + this.args.client_id + ", datetime_end_event = '" + end_date + "', id_services = " + this.args.id_services + ", " +
+            "client_id = " + this.args.client_id + ", datetime_end_event = '" + end_date + "', id_services = " + this.args.id_services + ", " + "id_status = "+ this.args.id_status+ " "+
             "information = '" + this.args.information + "' WHERE id = " + this.args.id + " RETURNING id");
         if (db_response.rows.length !== 0) {
             return db_response.rows

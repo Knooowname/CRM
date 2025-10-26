@@ -44,7 +44,7 @@ export const DashboardClientsCard: FC<DashboardClientsCardProps> = ({ img, name,
                     {status}
                 </p>
             </td>
-            <button className="text-[#9ae8e3] cursor-pointer">
+            <button className="text-[#6286ee] cursor-pointer">
                 Details →
             </button>
         </>

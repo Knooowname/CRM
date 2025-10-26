@@ -1,32 +1,61 @@
-import type { FC } from "react"
-import type { Client } from "../shared/types/clients.types"
-import { Option } from "./ui/Option"
+import { useEffect, type FC } from "react"
 import { DashboardClientsList } from "./DashboardClientsList"
+import { CustomSelect } from "./ui/CustomSelect"
+import { CreateBtn } from "./ui/CreateBtn"
+import { useMutation } from "@tanstack/react-query"
+import { APICOMMAND } from "../shared/types/command.types"
+import { api } from "../api/api"
+import config from '../../../server/source/config/config.json'
+import type { User } from "../shared/types/user.types"
+import { useAppDispatch, useAppSelector } from "../redux/hooks"
+import { setStatus } from "../redux/reducers/statusSlice"
 
 interface DashboardClientsProps {
-    data: Client[]
+    clients: User[]
 }
 
-export const DashboardClients: FC<DashboardClientsProps> = ({ data }) => {
+export const DashboardClients: FC<DashboardClientsProps> = ({ clients }) => {
+    
+    const dispatch = useAppDispatch()
+    const status = useAppSelector(state => state.status.status)
+
+    const {mutate} = useMutation({
+        mutationFn: async () => {
+            const response = await api(APICOMMAND.getStatus, {}, config)
+        
+            const responseData = await response.json()
+
+            if(responseData.error) {
+                throw new Error(`${responseData.error}`)
+            }
+
+            return responseData
+        },
+        onSuccess(data) {
+            console.log(data)
+            dispatch(setStatus(data.data))
+        },
+        onError(error) {
+            throw new Error(`${error}`)
+        }
+    })
+
+    useEffect(() => {
+        mutate()
+    }, [])
+
     return (
         <>
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-gray-500 font-medium text-xl">
-                    Clients
+                    Клиенты
                 </h2>
                 <div className="flex items-center gap-6">
-                    <select name="Opt 1" className="w-45 h-10 border-1 border-gray-300 rounded-md">
-                        <Option value="Approved"/>
-                        <Option value="Need approve"/>
-                        <Option value="New"/>
-                        <Option value="Refused"/>
-                    </select>
-                    <button className="h-10 w-35 bg-red-400 rounded-md">
-                        + Create client
-                    </button>
+                    <CustomSelect optionText="Status" optionValues={status ? status : null}/>
+                    <CreateBtn text="+ Создать клиента" modalType={'addClient'}/>
                 </div>
             </div>
-            <DashboardClientsList data={data}/>
+            <DashboardClientsList clients={clients}/>
         </>
     )
 }

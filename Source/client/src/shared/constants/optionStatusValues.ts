@@ -1,0 +1,1 @@
+export const optionStatusValues = ['All', 'Approved', 'Need approve', 'New', 'Refused']
