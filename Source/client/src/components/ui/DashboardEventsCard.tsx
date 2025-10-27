@@ -13,31 +13,41 @@ import { openModal } from "../../redux/reducers/modalSlice";
 interface DashboardClientsCardProps {
   id: string;
   img: string;
-  name: string;
-  surname: string;
-  recordingTime: string;
-  status: "Approved" | "Need approve" | "New" | "Refused";
-  setCurrentUserId?: (id: string) => void | null;
+  nameClient: string;
+  surnameClient: string;
+  eventEndDate: string;
+  eventStartDate: string;
+  status: string;
+  serviceName: string,
 }
 
 export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
   id,
   img,
-  name,
-  surname,
+  nameClient,
+  surnameClient,
   status,
-  recordingTime,
-  setCurrentUserId,
+  eventEndDate,
+  eventStartDate,
+  serviceName
 }) => {
   const dispatch = useAppDispatch();
 
-  const localDate = new Date(recordingTime).toLocaleString("ru-RU", {
+  const localStartDate = new Date(eventStartDate).toLocaleString("ru-RU", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  const localEndDate = new Date(eventEndDate).toLocaleString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
 
   return (
     <>
@@ -48,10 +58,10 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
         <div>
           <span className="text-gray-400 font-light text-sm">Имя Фамилия</span>
           <p className="text-[#333]">
-            {`${name.at(0)?.toUpperCase() + name.slice(1).toLowerCase()}` +
+            {`${nameClient.at(0)?.toUpperCase() + nameClient.slice(1).toLowerCase()}` +
               " " +
               `${
-                surname.at(0)?.toUpperCase() + surname.slice(1).toLowerCase()
+                surnameClient.at(0)?.toUpperCase() + surnameClient.slice(1).toLowerCase()
               }`}
           </p>
         </div>
@@ -61,30 +71,33 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
         <p className="text-[#333]">Service Name...</p>
       </td>
       <td className="flex flex-col gap-0.5 w-[20%]">
-        <span className="text-gray-400 font-light text-sm">Дата и время</span>
-        <p className="text-[#333]">{localDate}</p>
+        <span className="text-gray-400 font-light text-sm">Дата и время начала</span>
+        <p className="text-[#333]">{localStartDate}</p>
+      </td>
+      <td className="flex flex-col gap-0.5 w-[20%]">
+        <span className="text-gray-400 font-light text-sm">Дата и время окончания</span>
+        <p className="text-[#333]">{localEndDate}</p>
       </td>
       <td className="flex flex-col gap-0.5 w-[20%]">
         <span className="text-gray-400 font-light text-sm">Статус</span>
         <p
           className={`${
-            status === "Approved"
+            status.id === "6"
               ? "text-[#6fbe64]"
-              : status === "Need approve"
+              : status.id === "3"
               ? "text-[#e4dd73]"
-              : status === "New"
+              : status.id === "5"
               ? "text-[#62b3de]"
               : "text-[#d04547]"
           }`}
         >
-          {status}
+          {status.name_status}
         </p>
       </td>
       <button
-        onClick={setCurrentUserId ? () => {
-          setCurrentUserId(id);
+        onClick={() => {
           dispatch(openModal("details"));
-        } : undefined}
+        }}
         className="text-[#6286ee] cursor-pointer"
       >
         Details →

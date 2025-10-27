@@ -1,11 +1,5 @@
-import { useEffect, type FC } from "react"
+import { type FC } from "react"
 import type { Event } from "../shared/types/event.types"
-import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { useMutation } from "@tanstack/react-query"
-import { api } from "../api/api"
-import { APICOMMAND } from "../shared/types/command.types"
-import config from '../../../server/source/config/config.json'
-import { setStatus } from "../redux/reducers/statusSlice"
 import { CustomSelect } from "./ui/CustomSelect"
 import { CreateBtn } from "./ui/CreateBtn"
 import { DashboardEventsList } from "./DashboardEventsList"
@@ -32,7 +26,7 @@ export const DashboardEvents: FC<DashboardEventsProps> = ({ events, status, serv
                     <CreateBtn text="+ Создать ивент" modalType={'addClient'}/>
                 </div>
             </div>
-            <DashboardEventsList events={events} users={users} services={services}/>
+            <DashboardEventsList status={status} events={events} users={users} services={services}/>
         </>
     )
 }
