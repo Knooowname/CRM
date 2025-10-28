@@ -37,7 +37,7 @@ export const AuthForm = () => {
             return responseData
         },
         onSuccess(data) {
-            dispatch(setUser(data.data))
+            dispatch(setUser(data.data[0]))
             reset()
             navigate('/')
         },
@@ -57,7 +57,7 @@ export const AuthForm = () => {
                 <div className="grid grid-cols-2 px-40 py-15 w-full h-full gap-4">
                     <div className="flex flex-col justify-center p-20">
                         <h1 className="text-[40px] font-semibold text-[#FEFDFB] mb-6">
-                            Создайте аккаунт
+                            Войдите в аккаунт
                         </h1>
                         <div className="flex items center gap-4 mb-6">
                             <p className="text-xl font-light text-[#FEFDFB]">

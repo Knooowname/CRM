@@ -1,18 +1,8 @@
-// export const DashboardEventsCard = () => {
-//     return (
-//         <>
-
-//         </>
-//     )
-// }
-
-import type { FC } from "react";
+import { type FC } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { openModal } from "../../redux/reducers/modalSlice";
 
 interface DashboardClientsCardProps {
-  id: string;
-  img: string;
   nameClient: string;
   surnameClient: string;
   eventEndDate: string;
@@ -22,8 +12,6 @@ interface DashboardClientsCardProps {
 }
 
 export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
-  id,
-  img,
   nameClient,
   surnameClient,
   status,
@@ -49,12 +37,13 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
     minute: "2-digit",
   })
 
+  // useEffect(() => {
+  //   console.log(status)
+  // }, [status])
+
   return (
     <>
       <td className="flex gap-2 items-center w-[20%]">
-        <div
-          className={`bg-[url(${img})] bg-no-repeat bg-center bg-auto w-10 h-10 rounded-4xl bg-gray-300`}
-        ></div>
         <div>
           <span className="text-gray-400 font-light text-sm">Имя Фамилия</span>
           <p className="text-[#333]">
@@ -68,7 +57,7 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
       </td>
       <td className="flex flex-col gap-0.5 w-[20%]">
         <span className="text-gray-400 font-light text-sm">Услуга</span>
-        <p className="text-[#333]">Service Name...</p>
+        <p className="text-[#333]">{serviceName}</p>
       </td>
       <td className="flex flex-col gap-0.5 w-[20%]">
         <span className="text-gray-400 font-light text-sm">Дата и время начала</span>
@@ -82,23 +71,23 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
         <span className="text-gray-400 font-light text-sm">Статус</span>
         <p
           className={`${
-            status.id === "6"
+            status === "Подтвержден"
               ? "text-[#6fbe64]"
-              : status.id === "3"
+              : status === "Требуется подтверждение"
               ? "text-[#e4dd73]"
-              : status.id === "5"
+              : status === "Новый"
               ? "text-[#62b3de]"
               : "text-[#d04547]"
           }`}
         >
-          {status.name_status}
+          {status}
         </p>
       </td>
       <button
         onClick={() => {
           dispatch(openModal("details"));
         }}
-        className="text-[#6286ee] cursor-pointer"
+        className="text-[#6286ee] cursor-pointer min-w-[80px]"
       >
         Details →
       </button>

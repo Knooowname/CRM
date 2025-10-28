@@ -18,18 +18,18 @@ export const HomePage: FC = () => {
     const reduxState = useAppSelector(state => state)
     const user = useAppSelector(state => state.user.user)
 
-    const {mutate: loadEvents} = useMutation({
+    const { mutate: loadEvents } = useMutation({
         mutationKey: ['events'],
         mutationFn: async () => {
             const args = {
                 'user_id': `${user?.id}`
             }
 
-            const response = await api(APICOMMAND.getEventsUser, args , config)
-        
+            const response = await api(APICOMMAND.getEventsUser, args, config)
+
             const responseData = await response.json()
 
-            if(responseData.error) {
+            if (responseData.error) {
                 throw new Error(`${responseData.error}`)
             }
             return responseData
@@ -42,14 +42,14 @@ export const HomePage: FC = () => {
         }
     })
 
-    const {mutate: loadStatus} = useMutation({
+    const { mutate: loadStatus } = useMutation({
         mutationKey: ['status'],
         mutationFn: async () => {
             const responseStatus = await api(APICOMMAND.getStatus, {}, config)
-        
+
             const dataStatus = await responseStatus.json()
 
-            if(dataStatus.error) {
+            if (dataStatus.error) {
                 throw new Error(`${dataStatus.error}`)
             }
 
@@ -63,14 +63,14 @@ export const HomePage: FC = () => {
         }
     })
 
-    const {mutate: loadUsers} = useMutation({
+    const { mutate: loadUsers } = useMutation({
         mutationKey: ['users'],
         mutationFn: async () => {
             const responseUsers = await api(APICOMMAND.getAllUsers, {}, config)
 
             const dataUsers = await responseUsers.json()
 
-            if(dataUsers.error) {
+            if (dataUsers.error) {
                 throw new Error(`${dataUsers.error}`)
             }
 
@@ -84,14 +84,14 @@ export const HomePage: FC = () => {
         }
     })
 
-    const {mutate: loadServices} = useMutation({
+    const { mutate: loadServices } = useMutation({
         mutationKey: ['services'],
         mutationFn: async () => {
             const responseServices = await api(APICOMMAND.getServices, {}, config)
 
             const dataServices = await responseServices.json()
 
-            if(dataServices.error) {
+            if (dataServices.error) {
                 throw new Error(`${dataServices.error}`)
             }
 
@@ -106,17 +106,25 @@ export const HomePage: FC = () => {
     })
 
     useEffect(() => {
-        loadEvents()
-        loadStatus()
-        loadUsers()
-        loadServices()
-    }, [])
+        if (user && user.id) {
+            loadEvents()
+            loadStatus()
+            loadUsers()
+            loadServices()
+        }
+    }, [user])
+
+    // useEffect(() => {
+    //     console.log(user)
+    //     console.log(user?.id)
+    //     console.log(reduxState.status.status)
+    // }, [user, reduxState.status.status])
 
     return (
         <div className="flex w-full h-[100vh] px-6 py-4 pb-0">
             <div className="flex flex-col w-full min-w-300 max-w-300 pr-4">
-                <DashboardStatistic users={reduxState.users.users}/>
-                <DashboardEvents status={reduxState.status.status} services={reduxState.services.services} users={reduxState.users.users} events={reduxState ? reduxState.events.events : null}/>
+                <DashboardStatistic users={reduxState?.users?.users} />
+                <DashboardEvents status={reduxState?.status?.status} services={reduxState?.services?.services} users={reduxState?.users?.users} events={reduxState ? reduxState.events.events : null} />
             </div>
             <div className="overflow-hidden">
                 <СalendarAndActivities />

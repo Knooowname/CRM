@@ -1,4 +1,4 @@
-import type { FC } from "react"
+import { type FC } from "react"
 import type { Event } from "../shared/types/event.types"
 import { ClipLoader } from "react-spinners"
 import { DashboardEventsCard } from "./ui/DashboardEventsCard"
@@ -14,7 +14,8 @@ interface DashboardEventsListProps {
 }
 
 export const DashboardEventsList: FC<DashboardEventsListProps> = ({ events, services, users, status }) => {
-    if(!events || events.length === 0) {
+    
+    if(!events || events.length === 0 && !services && !status && !users) {
         return <div><ClipLoader/></div>
     }
 
@@ -30,7 +31,7 @@ export const DashboardEventsList: FC<DashboardEventsListProps> = ({ events, serv
 
                         return (
                             <tr key={index} className="w-full h-20 flex items-center justify-between py-2 px-4 border-1 border-gray-300 rounded-md">
-                                <DashboardEventsCard serviceName={filteredServices ? filteredServices[0]?.name_services : ''} eventEndDate={item.datetime_end_event} eventStartDate={item.datetime_start_event} status={filteredStatus ? filteredStatus[0]?.name_status : ''} id={item.id} img="" nameClient={filteredClient ? filteredClient[0]?.first_name : ''} surnameClient={filteredClient ? filteredClient[0]?.last_name : ''}/>
+                                <DashboardEventsCard  status={filteredStatus ? filteredStatus[0]?.name_status : ''} serviceName={filteredServices ? filteredServices[0]?.name_services : ''} eventEndDate={item.datetime_end_event} eventStartDate={item.datetime_start_event} nameClient={filteredClient ? filteredClient[0]?.first_name : ''} surnameClient={filteredClient ? filteredClient[0]?.last_name : ''}/>
                             </tr>
                         )
                     })}
