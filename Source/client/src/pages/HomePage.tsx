@@ -12,7 +12,11 @@ import { setStatus } from "../redux/reducers/statusSlice"
 import { setUsers } from "../redux/reducers/usersSlice"
 import { setServices } from "../redux/reducers/servicesSlice"
 
-export const HomePage: FC = () => {
+interface HomePageProps {
+    setCurrentEventId: (id: string) => void
+}
+
+export const HomePage: FC<HomePageProps> = ({ setCurrentEventId }) => {
 
     const dispatch = useAppDispatch()
     const reduxState = useAppSelector(state => state)
@@ -114,17 +118,11 @@ export const HomePage: FC = () => {
         }
     }, [user])
 
-    // useEffect(() => {
-    //     console.log(user)
-    //     console.log(user?.id)
-    //     console.log(reduxState.status.status)
-    // }, [user, reduxState.status.status])
-
     return (
         <div className="flex w-full h-[100vh] px-6 py-4 pb-0">
             <div className="flex flex-col w-full min-w-300 max-w-300 pr-4">
                 <DashboardStatistic users={reduxState?.users?.users} />
-                <DashboardEvents status={reduxState?.status?.status} services={reduxState?.services?.services} users={reduxState?.users?.users} events={reduxState ? reduxState.events.events : null} />
+                <DashboardEvents setCurrentEventId={setCurrentEventId} status={reduxState?.status?.status} services={reduxState?.services?.services} users={reduxState?.users?.users} events={reduxState ? reduxState.events.events : null} />
             </div>
             <div className="overflow-hidden">
                 <СalendarAndActivities />

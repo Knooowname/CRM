@@ -11,9 +11,10 @@ interface DashboardEventsListProps {
     services: Services[] | null,
     users: User[] | null,
     status: Status[] | null,
+    setCurrentEventId: (id: string) => void
 }
 
-export const DashboardEventsList: FC<DashboardEventsListProps> = ({ events, services, users, status }) => {
+export const DashboardEventsList: FC<DashboardEventsListProps> = ({ events, services, users, status, setCurrentEventId }) => {
     
     if(!events || events.length === 0 && !services && !status && !users) {
         return <div><ClipLoader/></div>
@@ -31,7 +32,7 @@ export const DashboardEventsList: FC<DashboardEventsListProps> = ({ events, serv
 
                         return (
                             <tr key={index} className="w-full h-20 flex items-center justify-between py-2 px-4 border-1 border-gray-300 rounded-md">
-                                <DashboardEventsCard  status={filteredStatus ? filteredStatus[0]?.name_status : ''} serviceName={filteredServices ? filteredServices[0]?.name_services : ''} eventEndDate={item.datetime_end_event} eventStartDate={item.datetime_start_event} nameClient={filteredClient ? filteredClient[0]?.first_name : ''} surnameClient={filteredClient ? filteredClient[0]?.last_name : ''}/>
+                                <DashboardEventsCard setCurrentEventId={setCurrentEventId} id={item.id} status={filteredStatus ? filteredStatus[0]?.name_status : ''} serviceName={filteredServices ? filteredServices[0]?.name_services : ''} eventEndDate={item.datetime_end_event} eventStartDate={item.datetime_start_event} nameClient={filteredClient ? filteredClient[0]?.first_name : ''} surnameClient={filteredClient ? filteredClient[0]?.last_name : ''}/>
                             </tr>
                         )
                     })}

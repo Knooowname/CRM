@@ -7,12 +7,16 @@ import { ServicesPage } from "./pages/ServicesPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { NewAuthPage } from "./pages/AuthPage";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ModalLayout } from "./components/ModalLayout";
 import { ModalFormAddClient } from "./components/ui/ModalFormAddClient";
 import { useAppSelector } from "./redux/hooks";
 import { ModalDetails } from "./components/ui/ModalDetails";
 import type { User } from "./shared/types/user.types";
+import { useCurrentValueModal } from "./hooks/useCurrentValueModal";
+import type { Event } from "./shared/types/event.types";
+import { ModalDetailsEvent } from "./components/ui/ModalDetailsEvent";
+import { useDinamicFilterData } from "./hooks/useDinamicFilterData";
 
 function AppWrapper() {
   return (
@@ -24,12 +28,15 @@ function AppWrapper() {
 
 function App() {
   
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
-
   const location = useLocation();
   const allUsers = useAppSelector(state => state.users.users)
+  const allEvents = useAppSelector(state => state.events.events)
   const modal = useAppSelector(state => state.modal)
+
+  const { currentValue: currentUser, setCurrentId: setCurrentUserId } = useCurrentValueModal<User>(allUsers as User[])
+  const { currentValue: currentEvent, setCurrentId: setCurrentEventId } = useCurrentValueModal<Event>(allEvents as Event[]) 
+
+  const { currentEventUser, currentEventClient, currentEventService, currentEventStatus } = useDinamicFilterData(currentEvent)
 
   // useEffect отвечающий за отображение паддингов у root div
   useEffect(() => {
@@ -43,14 +50,7 @@ function App() {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    const filteredUser = allUsers?.filter(user => user.id === currentUserId)
 
-    if(filteredUser) {
-      setCurrentUser(filteredUser[0])
-    }
-
-  }, [currentUserId])
 
   return (
     <>
@@ -68,9 +68,12 @@ function App() {
         {modal.isOpen && modal.type === 'details' && <ModalLayout>
           <ModalDetails img={''} clientName={currentUser?.first_name ? currentUser?.first_name : ''} clientSurname={currentUser?.last_name ? currentUser?.last_name : ''} dateAndTime={currentUser?.date_create ? currentUser.date_create : ''} serviceName={'name'} servicePrice={'3000'}/>  
         </ModalLayout>}
+        {modal.isOpen && modal.type === 'detailsEvent' && <ModalLayout>
+          <ModalDetailsEvent info={currentEvent ? currentEvent?.information : ''} statusName={currentEventStatus ? currentEventStatus.name_status : ''} priceService={currentEventService ? currentEventService?.price : ''} nameService={currentEventService ? currentEventService?.name_services : ''} dateStartEvent={currentEvent ? currentEvent?.datetime_start_event : ''} dateEndEvent={currentEvent ? currentEvent.datetime_end_event : ''} clientSurname={currentEventClient ? currentEventClient?.last_name : ''} clientName={currentEventClient ? currentEventClient?.first_name : ''} userName={currentEventUser ? currentEventUser?.first_name : ''} userSurname={currentEventUser ? currentEventUser?.last_name : ''}/>  
+        </ModalLayout>}
 
         <Routes>
-          <Route path={"/"} element={<HomePage />} />
+          <Route path={"/"} element={<HomePage setCurrentEventId={setCurrentEventId}/>} />
           <Route path={"/clients"} element={<ClientsPage setCurrentUserId={setCurrentUserId}/>} />
           <Route path={"/services"} element={<ServicesPage />} />
           <Route path={"/analytics"} element={<AnalyticsPage />} />

@@ -12,9 +12,10 @@ interface DashboardEventsProps {
     status: Status[] | null,
     users: User[] | null,
     services: Services[] | null,
+    setCurrentEventId: (id: string) => void
 }
 
-export const DashboardEvents: FC<DashboardEventsProps> = ({ events, status, services, users }) => {
+export const DashboardEvents: FC<DashboardEventsProps> = ({ events, status, services, users, setCurrentEventId }) => {
     return (
         <>
             <div className="flex justify-between items-center mb-4">
@@ -26,7 +27,7 @@ export const DashboardEvents: FC<DashboardEventsProps> = ({ events, status, serv
                     <CreateBtn text="+ Создать ивент" modalType={'addClient'}/>
                 </div>
             </div>
-            <DashboardEventsList status={status} events={events} users={users} services={services}/>
+            <DashboardEventsList setCurrentEventId={setCurrentEventId} status={status} events={events} users={users} services={services}/>
         </>
     )
 }

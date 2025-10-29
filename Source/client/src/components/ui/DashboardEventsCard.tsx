@@ -3,12 +3,14 @@ import { useAppDispatch } from "../../redux/hooks";
 import { openModal } from "../../redux/reducers/modalSlice";
 
 interface DashboardClientsCardProps {
+  id: string,
   nameClient: string;
   surnameClient: string;
   eventEndDate: string;
   eventStartDate: string;
   status: string;
   serviceName: string,
+  setCurrentEventId: (id: string) => void
 }
 
 export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
@@ -17,7 +19,9 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
   status,
   eventEndDate,
   eventStartDate,
-  serviceName
+  serviceName,
+  setCurrentEventId,
+  id
 }) => {
   const dispatch = useAppDispatch();
 
@@ -85,7 +89,8 @@ export const DashboardEventsCard: FC<DashboardClientsCardProps> = ({
       </td>
       <button
         onClick={() => {
-          dispatch(openModal("details"));
+          setCurrentEventId(id)
+          dispatch(openModal("detailsEvent"));
         }}
         className="text-[#6286ee] cursor-pointer min-w-[80px]"
       >
